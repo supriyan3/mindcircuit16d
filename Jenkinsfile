@@ -1,6 +1,9 @@
 pipeline {
 
     agent any
+	tools {
+		maven 'maven_3.9.11'
+	}
     stages {
 	
         stage('CLONE SCM') {
@@ -21,7 +24,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 echo 'This stage deploys .war to tomcat webserver'
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat', path: '', url: 'http://44.223.26.72:8090/')], contextPath: 'MC-APP', war: '**/*.war'
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat', path: '', url: 'http://44.223.26.72:8092/')], contextPath: 'MC-APP', war: '**/*.war'
             }
         }		
 		
