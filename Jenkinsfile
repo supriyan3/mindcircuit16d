@@ -9,7 +9,7 @@ pipeline {
         stage('CLONE SCM') {
             steps {
                 echo 'This stage clones SC from GIT repo'				
-				git branch: 'main', url: 'https://github.com/devopstraininghub/mindcircuit16d.git'
+				git branch: 'main', url: 'https://github.com/supriyan3/mindcircuit16d.git'
             }
         }
 		
@@ -24,7 +24,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 echo 'This stage deploys .war to tomcat webserver'
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat', path: '', url: 'http://44.223.26.72:8092/')], contextPath: 'MC-APP', war: '**/*.war'
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat', path: '', url: 'http://52.91.3.127:8082/')], contextPath: 'MC-APP', war: '**/*.war'
             }
         }		
 		
