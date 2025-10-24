@@ -23,6 +23,6 @@ spec:
         - name: arattai-app-cont
           image: snagineni03/dockerday5:snappyimg
           ports:
-            - containerPort: 80
+            - containerPort: 8080
     
 
