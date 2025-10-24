@@ -6,7 +6,6 @@ metadata:
    name: fb-lb-svc
    labels:
      app: facebook 
-
 spec:
   type: LoadBalancer
   ports:
@@ -16,6 +15,5 @@ spec:
 
   selector:
         app: facebook
-        env: lab
-      
+        
       
