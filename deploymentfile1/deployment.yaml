@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: arattai-app-cont
-          image: snagineni03/dockerday5:pythonimg
+          image: snagineni03/dockerday5:snappyimg
           ports:
             - containerPort: 80
     
