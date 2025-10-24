@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arattai-deploy
+  labels:
+    app: arattai-app
+    env: staging
+spec:
+  selector:
+    matchLabels:
+      app: arattai-app
+  replicas: 2
+  template: 
+    metadata:
+      name: arattai-app-pod
+      labels:
+        app: arattai-app
+        env: staging
+        version: v1_AC
+    spec:
+      containers:
+        - name: arattai-app-cont
+          image: snagineni03/dockerday5:pythonimg
+          ports:
+            - containerPort: 80
+    
+
