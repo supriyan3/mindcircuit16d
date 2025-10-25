@@ -23,6 +23,6 @@ spec:
     spec:
       containers:
         - name: fb-pod-cont
-          image: devopshubg333/batch16d:pythonimg
+          image: devopshubg333/batch16d:6
           ports:
             - containerPort: 8080
