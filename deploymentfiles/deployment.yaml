@@ -23,6 +23,6 @@ spec:
     spec:
       containers:
         - name: fb-pod-cont
-          image: snagineni03/dockerday5:5
+          image: snagineni03/dockerday5:4
           ports:
             - containerPort: 8080
