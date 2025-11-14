@@ -1,0 +1,96 @@
+Launch a t2.large ec2 instance with 30gb storage
+
+Install Jenkins
+sudo yum update -y 
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo 
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key 
+sudo yum upgrade -y 
+sudo dnf install java-17-amazon-corretto -y 
+sudo yum install jenkins -y 
+sudo systemctl enable jenkins 
+sudo systemctl start jenkins
+sudo systemctl status jenkins
+cat /var/lib/jenkins/secrets/initialAdminPassword
+sudo mount -o remount,size=4G /tmp
+
+
+tomcat download.... https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.44/bin/apache-tomcat-10.1.44.tar.gz
+
+tomcat user 
+<?xml version="1.0" encoding="utf-8"?>
+<tomcat-users>
+<role rolename="manager-gui"/>
+<user username="tomcat" password="tomcat" roles="manager-gui, manager-script, manager-status"/>
+</tomcat-users>
+
+
+Install docker and add users to run docker commands
+sudo yum install docker -y 
+sudo systemctl start docker 
+sudo usermod -aG docker jenkins 
+sudo usermod -aG docker ec2-user 
+sudo systemctl restart docker 
+sudo chmod 666 /var/run/docker.sock
+
+
+Install eksctl and kubectl 
+
+Kubectl
+echo "Installing kubectl..."
+curl -LO "https://dl.k8s.io/release/$(curl -sSL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+kubectl version --client
+
+Eksctl
+
+echo "Installing eksctl..."
+curl -sSL "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz" -o eksctl.tar.gz
+tar -xzf eksctl.tar.gz
+sudo mv eksctl /usr/local/bin/
+eksctl version
+
+
+aws configure:
+Access Key: ***************
+Secret access key: ****************
+
+check which IAM identity your AWS CLI is using ….aws sts get-caller-identity
+
+Install all plugins and tools in jenkins:
+Docker
+Sonarqube scanner
+Stageview :pipeline
+Blue ocean
+
+Tools: 
+Maven: maven3
+
+Install cluster in another tab:
+eksctl create cluster --name mcappcluster  --region us-east-1 --nodegroup-name mcng --node-type m3.micro --nodes 8 --managed ——if this doesn’t work
+eksctl create cluster --name mcappcluster  —— this will create 2 m5.large nodes
+
+Install and setup sonarqube:
+
+docker run -itd --name sonar -p 9000:9000 sonarqube 
+sonartoken - squ_fedf2f6622a4685b5693d8f6ac39f23b2b980236 - to scan in jenkins we need token 
+Install Git:
+yum install git -y 
+
+GitHub token : ********************
+
+Install Trivy: 
+Sudo yum update -y 
+Sudo yum install -y wget -rpm
+rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.67.0/trivy_0.67.0_Linux-64bit.rpm
+
+Install Argocd
+kubectl create ns argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl get all -n argocd  # It creates all clusterIP services  
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}' # to access in web we need to convert it into loadbalancer service
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d ; echo 
+
+Using the DNS service, login to argocd (admin and password = XYX) # it the DNS doesn’t work in the browser try in incognito 
+Create new app and provide the source and destination information 
+Get the dns and open it in incognito mode 
