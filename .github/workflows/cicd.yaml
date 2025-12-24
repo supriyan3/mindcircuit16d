@@ -22,7 +22,8 @@ jobs:
       #     java-version: '11'
 
       - name: Build WAR using Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean package
+       # run: mvn clean package -DskipTests
 
       - name: Deploy WAR to Tomcat
         run: |
